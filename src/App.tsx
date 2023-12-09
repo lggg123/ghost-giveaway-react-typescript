@@ -11,7 +11,6 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Ghosts NFT Giveaway</h1>
         <img src={heroImageUrl} alt="Hero" />
       </header>
       <main>
