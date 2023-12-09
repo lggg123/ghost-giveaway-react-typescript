@@ -12,6 +12,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Ghosts NFT Giveaway</h1>
+        <img src={heroImageUrl} alt="Hero" />
       </header>
       <main>
         <NftGallery heroImageUrl={heroImageUrl} openseaLink={openseaLink} />
