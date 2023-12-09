@@ -1,28 +1,19 @@
 // src/components/NftGallery.tsx
 
-import React, { useState, useEffect } from 'react';
-import NftCard from './NftCard';
+import React from 'react';
 
-interface Nft {
-    id: string;
-    title: string;
-    imageUrl: string;
+interface NftGalleryProps {
+    heroImageUrl: string;
+    openseaLink: string;
 }
 
-const NftGallery: React.FC = () => {
-    const [nfts, setNfts] = useState<Nft[]>([]);
-
-    useEffect(() => {
-        fetch('https://your-api.com/nfts')
-            .then(response => response.json())
-            .then(data => setNfts(data));
-    }, []);
-
+const NftGallery: React.FC<NftGalleryProps> = ({ heroImageUrl, openseaLink }) => {
     return (
         <div>
-            {nfts.map(nft => (
-                <NftCard key={nft.id} title={nft.title} imageUrl={nft.imageUrl} />
-            ))}
+            <img src={heroImageUrl} alt="Hero NFT" style={{ width: '100%', maxHeight: '500px', objectFit: 'cover' }} />
+            <a href={openseaLink} target="_blank" rel="noopener noreferrer" style={{ marginTop: '20px', display: 'inline-block' }}>
+                View Collection on OpenSea
+            </a>
         </div>
     );
 }
