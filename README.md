@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# Getting Started with NFT Ghost giveaway application
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+This is a Ghosterz NFT Giveaway frontend hosted on Vercel.
 
 ## Available Scripts
 
