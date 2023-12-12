@@ -4,6 +4,7 @@ import React from 'react';
 import './App.css';
 import NftGallery from './components/NftGallery'; // Import NftGallery component
 import Header from './components/Header';
+import ClaimNFTs from './components/claimNFT';
 
 function App() {
   const heroImageUrl = process.env.PUBLIC_URL + './cover_image.png';  // Replace with your actual hero image URL
@@ -16,6 +17,7 @@ function App() {
         <NftGallery heroImageUrl={heroImageUrl} openseaLink={openseaLink} />
       </header>
       <main>
+        <ClaimNFTs />
       </main>
     </div>
   );
