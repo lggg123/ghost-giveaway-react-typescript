@@ -2,22 +2,24 @@
 
 import React from 'react';
 import './App.css';
-import NftGallery from './components/NftGallery'; // Import NftGallery component
-import Header from './components/Header';
-import ClaimNFTs from './components/claimNFT';
+import NftGallery from './components/NftGallery';
+import SignupForm from './components/signUpForm';
 
 function App() {
-  const heroImageUrl = process.env.PUBLIC_URL + './cover_image.png';  // Replace with your actual hero image URL
-  const openseaLink = "https://opensea.io/collection/your-collection"; // Replace with your OpenSea collection link
-  const title = "Ghosterz NFT Collection Giveaway Coming Soon!"
+  const heroImageUrl = process.env.PUBLIC_URL + '/cover_image.png';
+  const openseaLink = 'https://opensea.io/collection/your-collection';
+  const title = 'GHOSTERZ';
+
   return (
     <div className="App">
       <header className="App-header">
-        <Header title={title}></Header>
-        <NftGallery heroImageUrl={heroImageUrl} openseaLink={openseaLink} />
+        <div className="hero-image">
+          <img src={heroImageUrl} alt="Hero" />
+        </div>
       </header>
       <main>
-        <ClaimNFTs />
+      <p>Sign Up for your free Ghosterz NFT airdrop</p>
+        <SignupForm />
       </main>
     </div>
   );
