@@ -6,14 +6,15 @@ import ArtCollectible from './ArtCollectible.json';
 // Define the contract address for Polygon Mumbai
 const contractAddress = '0x765676292b9D1E789250B29BF61AACCf4a9ECe48';
 
-interface NFT {
+interface GiveawayNFT {
   tokenId: number;
   imageUrl: string;
   // Add other properties based on your NFT metadata
 }
 
-const NFTGallery: React.FC = () => {
-  const [nfts, setNFTs] = useState<NFT[]>([]);
+const Giveaway: React.FC = () => {
+  const [availableNFTs, setAvailableNFTs] = useState<GiveawayNFT[]>([]);
+  const [claimedNFTs, setClaimedNFTs] = useState<GiveawayNFT[]>([]);
   const [tokenId, setTokenId] = useState<number>(0);
   const [transactionHash, setTransactionHash] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
@@ -35,6 +36,17 @@ const NFTGallery: React.FC = () => {
       await tx.wait();
       setLoading(false);
       setTransactionHash(tx.hash);
+
+      // Update claimedNFTs state to reflect the claimed NFT
+      const claimedNFT = availableNFTs.find((nft) => nft.tokenId === tokenId);
+      if (claimedNFT) {
+        setClaimedNFTs((prevClaimedNFTs) => [...prevClaimedNFTs, claimedNFT]);
+      }
+
+      // Update availableNFTs state to remove the claimed NFT
+      setAvailableNFTs((prevAvailableNFTs) =>
+        prevAvailableNFTs.filter((nft) => nft.tokenId !== tokenId)
+      );
     } catch (error) {
       setLoading(false);
       setError(`Error claiming NFT: ${(error as Error)?.message}`);
@@ -42,7 +54,7 @@ const NFTGallery: React.FC = () => {
   };
 
   useEffect(() => {
-    const fetchNFTs = async () => {
+    const fetchAvailableNFTs = async () => {
       try {
         // Connect to the Polygon Mumbai provider
         const provider: JsonRpcProvider = new ethers.JsonRpcProvider(
@@ -56,7 +68,7 @@ const NFTGallery: React.FC = () => {
         const totalSupply = await contract.totalSupply();
 
         // Fetch metadata for each NFT
-        const fetchedNFTs: NFT[] = [];
+        const fetchedNFTs: GiveawayNFT[] = [];
         for (let i = 0; i < totalSupply; i++) {
           const tokenId = await contract.tokenByIndex(i);
           const tokenUri = await contract.tokenURI(tokenId);
@@ -70,21 +82,21 @@ const NFTGallery: React.FC = () => {
           });
         }
 
-        setNFTs(fetchedNFTs);
+        setAvailableNFTs(fetchedNFTs.slice(0, 1000)); // Only the first 1000 NFTs are available for giveaway
       } catch (error) {
-        console.error('Error fetching NFTs:', error);
-        setError('Error fetching NFTs');
+        console.error('Error fetching available NFTs:', error);
+        setError('Error fetching available NFTs');
       }
     };
 
-    fetchNFTs();
+    fetchAvailableNFTs();
   }, []);
 
   return (
     <div>
-      <h1>NFT Gallery</h1>
+      <h1>NFT Giveaway</h1>
       <div>
-        {nfts.map((nft) => (
+        {availableNFTs.map((nft) => (
           <div key={nft.tokenId} style={{ marginBottom: '20px' }}>
             <img src={nft.imageUrl} alt={`NFT ${nft.tokenId}`} style={{ width: '200px', height: '200px' }} />
             <div>
@@ -115,4 +127,4 @@ const NFTGallery: React.FC = () => {
   );
 };
 
-export default NFTGallery;
+export default Giveaway;
