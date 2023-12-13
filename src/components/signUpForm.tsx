@@ -18,9 +18,30 @@ const SignupForm: React.FC = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Add logic to submit the form data (e.g., send to server, store in state, etc.)
+    try {
+      const response = await fetch('http://localhost:8080/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          walletAddress: formData.walletAddress,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to register user')
+      }
+        
+      } catch (error: any) {
+        console.error('Error registering user:', error.message);
+      
+    }
     console.log('Form submitted:', formData);
   };
 
