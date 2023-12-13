@@ -1,6 +1,6 @@
 // Import necessary libraries
 import React, { useState, useEffect } from 'react';
-import { ethers, JsonRpcProvider, JsonRpcSigner } from 'ethers';
+import { ethers } from 'ethers';
 import ArtCollectible from './ArtCollectible.json';
 
 // Define the contract address for Polygon Mumbai
@@ -19,11 +19,12 @@ const Giveaway: React.FC = () => {
   const [transactionHash, setTransactionHash] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [totalMinted, setTotalMinted] = useState<number>(0);
 
   const claimNFT = async () => {
     try {
       // Connect to the Polygon Mumbai provider
-      const provider: JsonRpcProvider = new ethers.JsonRpcProvider(
+      const provider = new ethers.JsonRpcProvider(
         'https://sly-white-energy.matic-testnet.quiknode.pro/d20feac5fd286b5c19ff6bc82c9b63aa2fa6352e/'
       );
 
@@ -36,7 +37,7 @@ const Giveaway: React.FC = () => {
       await tx.wait();
       setLoading(false);
       setTransactionHash(tx.hash);
-
+      console.log(tokenId);
       // Update claimedNFTs state to reflect the claimed NFT
       const claimedNFT = availableNFTs.find((nft) => nft.tokenId === tokenId);
       if (claimedNFT) {
@@ -53,11 +54,16 @@ const Giveaway: React.FC = () => {
     }
   };
 
+  const generateNextTokenId = () => {
+    // Generate a new token ID based on the previous one
+    setTokenId((prevTokenId) => prevTokenId + 1);
+  };
+
   useEffect(() => {
     const fetchAvailableNFTs = async () => {
       try {
         // Connect to the Polygon Mumbai provider
-        const provider: JsonRpcProvider = new ethers.JsonRpcProvider(
+        const provider = new ethers.JsonRpcProvider(
           'https://sly-white-energy.matic-testnet.quiknode.pro/d20feac5fd286b5c19ff6bc82c9b63aa2fa6352e/'
         );
 
@@ -83,6 +89,9 @@ const Giveaway: React.FC = () => {
         }
 
         setAvailableNFTs(fetchedNFTs.slice(0, 1000)); // Only the first 1000 NFTs are available for giveaway
+
+        // Set totalMinted state
+        setTotalMinted(await contract.totalMinted());
       } catch (error) {
         console.error('Error fetching available NFTs:', error);
         setError('Error fetching available NFTs');
@@ -95,10 +104,15 @@ const Giveaway: React.FC = () => {
   return (
     <div>
       <h1>NFT Giveaway</h1>
+      <p>Total Minted: {totalMinted}</p>
       <div>
         {availableNFTs.map((nft) => (
           <div key={nft.tokenId} style={{ marginBottom: '20px' }}>
-            <img src={nft.imageUrl} alt={`NFT ${nft.tokenId}`} style={{ width: '200px', height: '200px' }} />
+            <img
+              src={nft.imageUrl}
+              alt={`NFT ${nft.tokenId}`}
+              style={{ width: '200px', height: '200px' }}
+            />
             <div>
               <button onClick={() => setTokenId(nft.tokenId)}>Claim NFT {nft.tokenId}</button>
             </div>
@@ -107,13 +121,8 @@ const Giveaway: React.FC = () => {
       </div>
       <div>
         <label>Token ID:</label>
-        <input
-          type="number"
-          value={tokenId}
-          onChange={(e) => setTokenId(Number(e.target.value))}
-        />
       </div>
-      <button onClick={claimNFT} disabled={loading}>
+      <button onClick={claimNFT} onClickCapture={generateNextTokenId} disabled={loading}>
         Claim NFT
       </button>
       {loading && <p>Loading...</p>}
