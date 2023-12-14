@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SuccessPage from './SuccessPage';
 
 interface SignupFormData {
   name: string;
@@ -12,6 +13,8 @@ const SignupForm: React.FC = () => {
     email: '',
     walletAddress: '',
   });
+
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -34,6 +37,8 @@ const SignupForm: React.FC = () => {
         }),
       })
 
+      setIsSubmitted(true);
+
       if (!response.ok) {
         throw new Error('Failed to register user')
       }
@@ -47,39 +52,43 @@ const SignupForm: React.FC = () => {
 
   return (
     <div className="signup-form-container">
-      <form onSubmit={handleSubmit} className="signup-form">
-        <label>
-          Name:
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <label>
-          Wallet Address:
-          <input
-            type="text"
-            name="walletAddress"
-            value={formData.walletAddress}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <button type="submit">Sign Up</button>
-      </form>
+      { isSubmitted ? (
+        <SuccessPage /> // Render SuccessPage when the form is successfully submitted
+      ) : (
+        <form onSubmit={handleSubmit} className="signup-form">
+          <label>
+            Name:
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <label>
+            Email:
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <label>
+            Wallet Address:
+            <input
+              type="text"
+              name="walletAddress"
+              value={formData.walletAddress}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <button type="submit">Sign Up</button>
+        </form>
+      )}
     </div>
   );
 };
