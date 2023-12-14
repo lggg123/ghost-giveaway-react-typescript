@@ -2,8 +2,9 @@
 
 import React from 'react';
 import './App.css';
-import SignupForm from './components/signUpForm';
+
 import { useMediaQuery } from 'react-responsive';
+import SignupForm from './components/SignupForm';
 
 function App() {
   const heroImageUrl = process.env.PUBLIC_URL + '/cover_image.png';
