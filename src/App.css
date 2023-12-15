@@ -2,12 +2,18 @@
 
 .App {
   text-align: center;
-  background-color: #071321;
   color: white;
+}
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #071321;
 }
 
 .App-header {
-  background-color: #071321;
   min-height: 5vh;
   display: flex;
   align-items: center; /* Vertically center the items */
