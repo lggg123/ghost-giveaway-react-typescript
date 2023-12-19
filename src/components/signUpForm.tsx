@@ -25,7 +25,7 @@ const SignupForm: React.FC = () => {
     e.preventDefault();
     // Add logic to submit the form data (e.g., send to server, store in state, etc.)
     try {
-      const response = await fetch('http://localhost:8080/signup', {
+      const response = await fetch('https://goghosterz-3ac2cc4dafa8.herokuapp.com/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
