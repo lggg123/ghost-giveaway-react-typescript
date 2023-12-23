@@ -20,7 +20,7 @@ function App() {
         </div>
       </header>
       <main>
-      <p>Sign Up for your free Ghosterz NFT airdrop which drops December 29th!</p>
+      <p>Sign Up for your free Ghosterz NFT airdrop which drops January 14th!</p>
         <SignupForm />
       </main>
     </div>
