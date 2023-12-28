@@ -56,8 +56,10 @@ const SignupForm: React.FC = () => {
         <SuccessPage /> // Render SuccessPage when the form is successfully submitted
       ) : (
         <form onSubmit={handleSubmit} className="signup-form">
-          <label>
-            Name:
+          <div>
+            <label style={{ margin: '18px' }}>
+              Name:
+            </label>
             <input
               type="text"
               name="name"
@@ -65,19 +67,23 @@ const SignupForm: React.FC = () => {
               onChange={handleChange}
               required
             />
-          </label>
+          </div>
+          <div>
+            <label style={{ margin: '20px' }}>
+              Email:
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+          </div>
+          <div style={{ display: 'flex' }}>
           <label>
-            Email:
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <label>
-            Wallet Address:
+            Wallet 
+            Address:
             <input
               type="text"
               name="walletAddress"
@@ -86,6 +92,7 @@ const SignupForm: React.FC = () => {
               required
             />
           </label>
+          </div>
           <button type="submit">Sign Up</button>
         </form>
       )}
